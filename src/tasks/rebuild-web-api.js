@@ -271,6 +271,18 @@ module.exports = function rebuildWebApi(functionName, functionVersion, restApiId
 				}
 			})
 			.then(() => {
+				return apiGateway.updateRestApiPromise({
+					restApiId: restApiId,
+					patchOperations: [
+						{
+							op: 'replace',
+							path: '/minimumCompressionSize',
+							value: '0'
+						},
+					],
+				});
+			})
+			.then(() => {
 				if (apiConfig.binaryMediaTypes) {
 					return patchBinaryTypes(restApiId, apiGateway, apiConfig.binaryMediaTypes);
 				}
